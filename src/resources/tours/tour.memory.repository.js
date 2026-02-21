@@ -17,8 +17,9 @@ const updateTour = async (id, data) => {
       ...data,
       updatedAt: new Date(),
     };
-    return null;
-  } 
+    return FAKE_TOUR_DB[index];
+  }
+  return null;
 };
 
 const removeTour = async (id) => {

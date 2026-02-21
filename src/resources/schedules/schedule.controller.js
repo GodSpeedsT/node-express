@@ -3,13 +3,13 @@ import { Schedule } from './schedule.model.js';
 
 const getAll = async (req, res) => {
   const schedules = await scheduleService.getAll();
-  res.json(schedules.map(Schedule.toResponse));
+  return res.json(schedules.map(Schedule.toResponse));
 };
 
 const getById = async (req, res) => {
   const schedule = await scheduleService.getById(req.params.scheduleId);
   if (!schedule) return res.status(404).send('Schedule not found');
-  res.json(Schedule.toResponse(schedule));
+  return res.json(Schedule.toResponse(schedule));
 };
 
 const create = async (req, res) => {
@@ -19,24 +19,24 @@ const create = async (req, res) => {
     return res.status(400).json({ error: 'productId is required' });
   }
   const schedule = await scheduleService.create(new Schedule({ ...req.body, productId }));
-  res.status(201).json(Schedule.toResponse(schedule));
+  return res.status(201).json(Schedule.toResponse(schedule));
 };
 
 const update = async (req, res) => {
   const schedule = await scheduleService.update(req.params.scheduleId, req.body);
   if (!schedule) return res.status(404).send('Schedule not found');
-  res.json(Schedule.toResponse(schedule));
+  return res.json(Schedule.toResponse(schedule));
 };
 
 const remove = async (req, res) => {
   const schedule = await scheduleService.remove(req.params.scheduleId);
   if (!schedule) return res.status(404).send('Schedule not found');
-  res.status(204).send('Schedule deleted');
+  return res.status(204).send('Schedule deleted');
 };
 
 const getPrices = async (req, res) => {
   const prices = await scheduleService.getSchedulePrices(req.params.scheduleId);
-  res.json(prices);
+  return res.json(prices);
 };
 
 export default { create, getPrices, getAll, getById, update, remove };
