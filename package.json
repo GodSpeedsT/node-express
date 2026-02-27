@@ -5,11 +5,11 @@
     "type": "git",
     "url": ""
   },
-  "type": "module",
   "description": "nodejs-mitso",
   "main": "src/server.js",
   "scripts": {
-    "start": "nodemon src/server.js",
+    "start": "nodemon --exec ts-node src/server.ts",
+    "build": "tsc",
     "lint": "eslint --ext .js,.ts --fix src/"
   },
   "keywords": [
@@ -21,7 +21,7 @@
   ],
   "license": "ISC",
   "engines": {
-    "node": ">=18.0.0 <19"
+    "node": ">=18.0.0"
   },
   "jest": {
     "testEnvironment": "node",
@@ -41,20 +41,27 @@
   },
   "dependencies": {
     "cross-env": "^7.0.3",
-    "dotenv": "^9.0.0",
+    "dotenv": "^9.0.2",
     "express": "^4.22.1",
     "uuid": "^8.3.2"
   },
   "devDependencies": {
+    "@types/express": "^5.0.6",
+    "@types/node": "^25.3.0",
+    "@types/uuid": "^10.0.0",
+    "@typescript-eslint/eslint-plugin": "^8.56.1",
+    "@typescript-eslint/parser": "^8.56.1",
     "debug": "^4.3.1",
-    "eslint": "^7.2.0",
-    "eslint-config-airbnb-base": "^14.2.1",
+    "eslint": "^8.57.1",
+    "eslint-config-airbnb-base": "^15.0.0",
     "eslint-config-prettier": "^8.3.0",
-    "eslint-plugin-import": "^2.22.1",
+    "eslint-plugin-import": "^2.32.0",
     "eslint-plugin-node": "^11.1.0",
     "eslint-plugin-prettier": "^3.4.0",
     "lint-staged": "^10.5.4",
-    "nodemon": "^2.0.7",
-    "prettier": "^2.2.1"
+    "nodemon": "^2.0.22",
+    "prettier": "^2.2.1",
+    "ts-node": "^10.9.2",
+    "typescript": "^5.9.3"
   }
 }
