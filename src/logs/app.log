@@ -1,0 +1,5 @@
+{"body":{"description":"круто","slug":"po prikolugfn4","title":"Тур на зону"},"level":"info","message":"Req: POST /tours","query":{},"timestamp":"2026-02-28T19:56:51.880Z"}
+{"level":"info","message":"Res: POST /tours - status: 201","timestamp":"2026-02-28T19:56:51.892Z"}
+{"body":{},"level":"info","message":"Req: GET /prices/fake","query":{},"timestamp":"2026-02-28T19:57:08.430Z"}
+{"level":"error","message":"Unhandled Rejection: Test Express Error","timestamp":"2026-02-28T19:57:08.433Z"}
+{"level":"error","message":"Uncaught exception: CRITICAL SYSTEM FAILURE","stack":"Error: CRITICAL SYSTEM FAILURE\n    at Timeout._onTimeout (C:\\Users\\User\\GitHubRepos\\node-expres-ts\\src\\server.ts:10:9)\n    at listOnTimeout (node:internal/timers:605:17)\n    at processTimers (node:internal/timers:541:7)","timestamp":"2026-02-28T19:58:33.952Z"}
