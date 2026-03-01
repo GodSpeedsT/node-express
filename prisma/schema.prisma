@@ -1,0 +1,43 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
+// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
+
+generator client {
+  provider = "prisma-client"
+  output   = "../src/generated/prisma"
+}
+
+datasource db {
+  provider = "postgresql"
+}
+
+model Price {
+  id            String   @id @default(uuid())
+  scheduleId    String
+  priceValue    Int
+  priceCurrency String
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
+
+  @@map("prices")
+}
+
+model Tour {
+  id          String  @id @default(uuid())
+  title       String
+  slug        String
+  description String
+  isAlive     Boolean
+}
+
+model Schedule {
+  id        String   @id @default(uuid())
+  productId String
+  isActive  Boolean
+  startDate DateTime
+  endDate   DateTime
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
