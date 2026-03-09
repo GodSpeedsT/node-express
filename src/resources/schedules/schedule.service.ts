@@ -1,6 +1,6 @@
+import { Schedule } from '@prisma/client';
 import scheduleRepo from './schedule.memory.repository';
 import priceService from '../prices/price.service';
-import { Schedule } from './schedule.model';
 
 const getAll = () => scheduleRepo.getAll();
 const getById = (id: string) => scheduleRepo.getById(id);

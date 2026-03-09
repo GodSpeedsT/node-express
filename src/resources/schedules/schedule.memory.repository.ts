@@ -1,38 +1,35 @@
-import { Schedule } from './schedule.model';
+import { Schedule } from '@prisma/client';
+import prisma from '../../db/client';
 
-const FAKE_DB: Schedule[] = [];
+const getAll = async (): Promise<Schedule[]> => prisma.schedule.findMany();
 
-const getAll = async () => FAKE_DB;
-const getById = async (id: string) => FAKE_DB.find((s) => s.id === id);
-const getByTourId = async (tourId: string) => FAKE_DB.filter((s) => s.productId === tourId);
+const getById = async (id: string): Promise<Schedule | null> => prisma.schedule.findUnique({
+    where: { id },
+    include: { prices: true },
+  });
 
-const create = async (schedule: Schedule) => {
-  FAKE_DB.push(schedule);
-  return schedule;
-};
+const getByTourId = async (tourId: string): Promise<Schedule[]> => prisma.schedule.findMany({
+    where: { tourId },
+  });
 
-const update = async (id: string, data: Schedule) => {
-  const index = FAKE_DB.findIndex((s) => s.id === id);
-  if (index !== -1) {
-    FAKE_DB[index] = { ...FAKE_DB[index], ...data, updatedAt: new Date() };
-    return FAKE_DB[index];
-  }
-  return null;
-};
+const create = async (data: Omit<Schedule, 'id' | 'createdAt' | 'updatedAt'>) => prisma.schedule.create({
+    data,
+  });
 
-const remove = async (id: string) => {
-  const index = FAKE_DB.findIndex((s) => s.id === id);
-  if (index !== -1) {
-    return FAKE_DB.splice(index, 1)[0];
-  }
-  return null;
-};
+const update = async (id: string, data: Partial<Schedule>) => prisma.schedule.update({
+    where: { id },
+    data: {
+      ...data,
+      updatedAt: new Date(),
+    },
+  });
 
-const removeByTourId = async (tourId: string) => {
-  const toDelete = await getByTourId(tourId);
-  for (const schedule of toDelete) {
-    await remove(schedule.id);
-  }
-};
+const remove = async (id: string) => prisma.schedule.delete({
+    where: { id },
+  });
+
+const removeByTourId = async (tourId: string) => prisma.schedule.deleteMany({
+    where: { tourId },
+  });
 
 export default { getAll, getById, getByTourId, create, update, remove, removeByTourId };

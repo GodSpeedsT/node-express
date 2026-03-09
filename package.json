@@ -40,6 +40,8 @@
     ]
   },
   "dependencies": {
+    "@prisma/adapter-pg": "^7.4.2",
+    "@prisma/client": "^7.4.2",
     "cross-env": "^7.0.3",
     "dotenv": "^9.0.2",
     "express": "^4.22.1",
