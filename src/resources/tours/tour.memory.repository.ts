@@ -1,35 +1,23 @@
-import { Tour } from './tour.model';
+import { Tour } from '@prisma/client';
+import prisma from '../../db/client';
 
-const FAKE_TOUR_DB: Tour[] = [];
+const getAllTours = async (): Promise<Tour[]> => prisma.tour.findMany();
 
-const getAllTours = async () => FAKE_TOUR_DB;
-const getTourById = async (id: string) => FAKE_TOUR_DB.find((s) => s.id === id);
+const getTourById = async (id: string): Promise<Tour | null> => prisma.tour.findUnique({
+    where: { id },
+  });
 // const getByTourWithSchedule = async (tourId) => FAKE_TOUR_DB.filter((s) => s.productId);
 
-const createTour = async (tour: Tour) => {
-  FAKE_TOUR_DB.push(tour);
-  return tour;
-};
+const createTour = async (data: Omit<Tour, 'id'>) => prisma.tour.create({
+    data,
+  });
+const updateTour = async (id: string, data: Partial<Tour>) => prisma.tour.update({
+    where: { id },
+    data,
+  });
 
-const updateTour = async (id: string, data: Tour) => {
-  const index = FAKE_TOUR_DB.findIndex((tour) => tour.id === id);
-  if (index !== -1) {
-    FAKE_TOUR_DB[index] = {
-      ...FAKE_TOUR_DB[index],
-      ...data,
-    };
-    return FAKE_TOUR_DB[index];
-  }
-  return null;
-};
-
-const removeTour = async (id: string) => {
-  const index = FAKE_TOUR_DB.findIndex((s) => s.id === id);
-  if (index !== -1) {
-    const deleted = FAKE_TOUR_DB.splice(index, 1);
-    return deleted[0];
-  }
-  return null;
-};
+const removeTour = async (id: string): Promise<Tour | null> => prisma.tour.delete({
+    where: { id },
+  });
 
 export default { getAllTours, getTourById, updateTour, createTour, removeTour };

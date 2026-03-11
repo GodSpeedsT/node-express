@@ -1,6 +1,6 @@
+import { Tour } from '@prisma/client';
 import tourRepo from './tour.memory.repository';
 import scheduleService from '../schedules/schedule.service';
-import { Tour } from './tour.model';
 
 const getAll = () => tourRepo.getAllTours();
 const getById = (id: string) => tourRepo.getTourById(id);

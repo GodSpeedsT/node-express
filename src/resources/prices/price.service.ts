@@ -1,5 +1,6 @@
+import { Price } from '@prisma/client';
 import priceRepo from './price.memory.repository';
-import { Price } from './price.model';
+
 
 const getAll = async () => priceRepo.getAll();
 const getById = async (id: string) => priceRepo.getById(id);

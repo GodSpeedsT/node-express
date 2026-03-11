@@ -1,10 +1,15 @@
 import { Request, Response } from 'express';
+import { Price } from '@prisma/client';
 import priceService from './price.service';
-import { Price } from './price.model';
 
-const getAll = async (res: Response) => {
+const toResponse = (price: Price) => {
+  const { id, scheduleId, priceValue, priceCurrency, createdAt, updatedAt } = price;
+  return { id, scheduleId, priceValue, priceCurrency, createdAt, updatedAt };
+};
+
+const getAll = async (_req: Request, res: Response) => {
   const prices = await priceService.getAll();
-  return res.json(prices.map(Price.toResponse));
+  return res.json(prices.map(toResponse));
 };
 
 const getById = async (req: Request<{ priceId: string }>, res: Response) => {
@@ -13,7 +18,7 @@ const getById = async (req: Request<{ priceId: string }>, res: Response) => {
   if (!price) {
     return res.status(404).json({ message: 'Price not found' });
   }
-  return res.json(Price.toResponse(price));
+  return res.json(toResponse(price));
 };
 
 const create = async (req: Request, res: Response) => {
@@ -23,8 +28,8 @@ const create = async (req: Request, res: Response) => {
     return res.status(400).json({ message: 'scheduleId is required' });
   }
 
-  const newPrice = await priceService.create(new Price({ ...req.body, scheduleId }));
-  return res.status(201).json(Price.toResponse(newPrice));
+  const newPrice = await priceService.create({ ...req.body, scheduleId });
+  return res.status(201).json(toResponse(newPrice));
 };
 
 const update = async (req: Request<{ priceId: string }>, res: Response) => {
@@ -33,7 +38,7 @@ const update = async (req: Request<{ priceId: string }>, res: Response) => {
   if (!updated) {
     return res.status(404).json({ message: 'Price not found' });
   }
-  return res.json(Price.toResponse(updated));
+  return res.json(toResponse(updated));
 };
 
 const remove = async (req: Request<{ priceId: string }>, res: Response) => {
@@ -48,5 +53,7 @@ const remove = async (req: Request<{ priceId: string }>, res: Response) => {
 const getPricesIncorrect = async () => {
   throw new Error('Test Express Error');
 };
+
+
 
 export default { getAll, getById, create, update, remove, getPricesIncorrect };

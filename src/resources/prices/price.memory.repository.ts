@@ -1,42 +1,32 @@
-import { Price } from './price.model';
+import { Price } from '@prisma/client';
+import prisma from '../../db/client';
 
-const FAKE_PRICE_DB: Price[] = [];
+const getAll = async (): Promise<Price[]> => prisma.price.findMany();
 
-const getAll = async (): Promise<Price[]> => FAKE_PRICE_DB;
+const getById = async (id: string): Promise<Price | null> => prisma.price.findUnique({
+    where: { id },
+    include: { schedule: true },
+  });
 
-const getById = async (id: string): Promise<Price | undefined> =>
-  FAKE_PRICE_DB.find((s) => s.id === id);
+const getByScheduleId = async (scheduleId: string): Promise<Price[]> => prisma.price.findMany({
+    where: { scheduleId },
+  });
 
-const getByScheduleId = async (scheduleId: string): Promise<Price[]> =>
-  FAKE_PRICE_DB.filter((p) => p.scheduleId === scheduleId);
+const create = async (data: Omit<Price, 'id' | 'createdAt' | 'updatedAt'>): Promise<Price> => prisma.price.create({
+    data,
+  });
 
-const create = async (price: Price): Promise<Price> => {
-  FAKE_PRICE_DB.push(price);
-  return price;
-};
+const update = async (id: string, data: Partial<Price>): Promise<Price | null> => prisma.price.update({
+    where: { id },
+    data,
+  });
 
-const update = async (id: string, data: Price): Promise<Price | null> => {
-  const index = FAKE_PRICE_DB.findIndex((p) => p.id === id);
-  if (index !== -1) {
-    FAKE_PRICE_DB[index] = { ...FAKE_PRICE_DB[index], ...data, updatedAt: new Date() };
-    return FAKE_PRICE_DB[index];
-  }
-  return null;
-};
+const remove = async (id: string): Promise<Price | null> =>  prisma.price.delete({
+    where: { id },
+  });
 
-const remove = async (id: string): Promise<Price | null> => {
-  const index = FAKE_PRICE_DB.findIndex((p) => p.id === id);
-  if (index !== -1) {
-    const [deletedPrice] = FAKE_PRICE_DB.splice(index, 1);
-    return deletedPrice || null;
-  }
-  return null;
-};
-
-const removeByScheduleId = async (scheduleId: string): Promise<void> => {
-  const toDelete = FAKE_PRICE_DB.filter((k) => k.scheduleId !== scheduleId);
-  FAKE_PRICE_DB.length = 0;
-  FAKE_PRICE_DB.push(...toDelete);
-};
+const removeByScheduleId = async (scheduleId: string) => prisma.price.deleteMany({
+    where: { scheduleId },
+  });
 
 export default { getAll, getById, getByScheduleId, create, update, remove, removeByScheduleId };
