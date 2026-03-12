@@ -1,15 +1,15 @@
-import jwt from 'jsonwebtoken';
-import bcrypt from 'bcrypt';
-import adminRepo from '../security/admin.repository';
-const login = async (loginData: { login: string; password: any }) => {
-  const admin = await adminRepo.getByLogin(loginData.login);
-  if (!admin) return null;
+import { Request, Response } from 'express';
+import securityService from './security.service';
 
-  const isPasswordMatch = await bcrypt.compare(loginData.password, admin.password);
-  if (!isPasswordMatch) return null;
+const login = async (req: Request, res: Response) => {
+  const { login, password } = req.body;
 
-  const payload = { id: admin.id, login: admin.login };
-  const token = jwt.sign(payload, process.env.JWT_SECRET_KEY as string, { expiresIn: '24h' });
+  const result = await securityService.login({ login, password });
+  if (!result) {
+    return res.status(401).json({ message: 'Invalid login or password' });
+  }
 
-  return { token };
+  return res.json({ token: result.token });
 };
+
+export default { login };

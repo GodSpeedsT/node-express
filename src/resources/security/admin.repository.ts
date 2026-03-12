@@ -1,12 +1,12 @@
-import prisma from '../../db/client';
 import bcrypt from 'bcrypt';
-import { Prisma } from '@prisma/client';
+import { Prisma, Admin } from '@prisma/client';
+import prisma from '../../db/client';
 
-export const create = async (data: Prisma.AdminCreateInput) => {
+export const create = async (data: Prisma.AdminCreateInput): Promise<Admin> => {
   const rounds = 10;
   const hashedPassword = await bcrypt.hash(data.password, rounds);
 
-  return await prisma.admin.create({
+  return prisma.admin.create({
     data: {
       ...data,
       password: hashedPassword,
@@ -14,8 +14,12 @@ export const create = async (data: Prisma.AdminCreateInput) => {
   });
 };
 
-const adminRepo = {
-create
-}
+export const getByLogin = async (login: string): Promise<Admin | null> => prisma.admin.findUnique({
+    where: { login },
+  });
 
-export default adminRepo
+export const getById = async (id: string): Promise<Admin | null> => prisma.admin.findUnique({
+    where: { id },
+  });
+
+export default { create, getByLogin, getById };
