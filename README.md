@@ -1,43 +1,16 @@
-# basic-nodejs-mitso
+download dependencies : npm i
 
-## Prerequisites
+generate entities: npx prisma generate
 
-- Git - [Download & Install Git](https://git-scm.com/downloads).
-- Node.js - [Download & Install Node.js](https://nodejs.org/en/download/) and the npm package
-  manager.
+seed 2 admins: npx prisma db seed 
 
-## Downloading
+run project: docker-compose build and docker-compose up -d
 
-```
-git clone {repository URL}
-```
+check mistakes: npm run lint
 
-## Installing NPM modules
+check the authorize and other endpoints: 
+For example: http://localhost:4000/login - get token
 
-```
-npm install
-```
+put token on 'Bearer token' mode in postman auth and use GET http://localhost:4000/tours
 
-## Running application
 
-```
-npm start
-```
-
-## Development
-
-If you're using VSCode, you can get a better developer experience from integration with
-[ESLint](https://marketplace.visualstudio.com/items?itemName=dbaeumer.vscode-eslint) and
-[Prettier](https://marketplace.visualstudio.com/items?itemName=esbenp.prettier-vscode) extensions.
-
-### Auto-fix and format
-
-```
-npm run lint
-```
-
-### Debugging in VSCode
-
-Press <kbd>F5</kbd> to debug.
-
-For more information, visit: https://code.visualstudio.com/docs/editor/debugging
